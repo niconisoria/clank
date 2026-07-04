@@ -59,6 +59,9 @@ flowchart TD
 ## Structure
 
 ```
+hooks/
+  hooks.json        — plugin hook registration (loaded when installed as a plugin)
+  *.sh               — guard/test scripts, referenced via ${CLAUDE_PLUGIN_ROOT}
 docs/
   specs/            — feature specs (status-tracked, workflow-owned)
   MEMORY.md         — decision rationales: why X over Y, never file paths or patterns

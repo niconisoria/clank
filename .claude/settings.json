@@ -6,28 +6,28 @@
     "PreToolUse": [
       {
         "matcher": "Write",
-        "hooks": [{"type": "command", "command": "bash .claude/hooks/file-guard.sh"}]
+        "hooks": [{"type": "command", "command": "bash hooks/file-guard.sh"}]
       },
       {
         "matcher": "Edit",
-        "hooks": [{"type": "command", "command": "bash .claude/hooks/file-guard.sh"}]
+        "hooks": [{"type": "command", "command": "bash hooks/file-guard.sh"}]
       },
       {
         "matcher": "Bash",
         "hooks": [
-          {"type": "command", "command": "bash .claude/hooks/bash-guard.sh"},
-          {"type": "command", "command": "bash .claude/hooks/commit-guard.sh"}
+          {"type": "command", "command": "bash hooks/bash-guard.sh"},
+          {"type": "command", "command": "bash hooks/commit-guard.sh"}
         ]
       }
     ],
     "PostToolUse": [
       {
         "matcher": "Write",
-        "hooks": [{"type": "command", "command": "bash .claude/hooks/post-edit-tests.sh"}]
+        "hooks": [{"type": "command", "command": "bash hooks/post-edit-tests.sh"}]
       },
       {
         "matcher": "Edit",
-        "hooks": [{"type": "command", "command": "bash .claude/hooks/post-edit-tests.sh"}]
+        "hooks": [{"type": "command", "command": "bash hooks/post-edit-tests.sh"}]
       }
     ]
   }

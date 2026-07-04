@@ -1,0 +1,31 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [{"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/hooks/file-guard.sh"}]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [{"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/hooks/file-guard.sh"}]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/hooks/bash-guard.sh"},
+          {"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/hooks/commit-guard.sh"}
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [{"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/hooks/post-edit-tests.sh"}]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [{"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/hooks/post-edit-tests.sh"}]
+      }
+    ]
+  }
+}
