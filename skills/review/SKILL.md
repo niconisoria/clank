@@ -14,7 +14,7 @@ Caveman mode: terse, no filler, compress aggressively.
 
 Input: spec file path.
 
-Read `CLAUDE.md` (if present), `docs/architecture.md` (if present), `docs/MEMORY.md` (if present), and the spec's `### Architecture` section (treat as `(none)` if absent).
+Read `CLAUDE.md` (if present), `docs/architecture.md` (if present), `docs/MEMORY.md` (if present), and the spec's `## Architecture` section (treat as `(none)` if absent).
 
 Get `TEST_CMD`: `grep "^- test_cmd:" CLAUDE.md`. If missing, ask the user for the test command — do not re-run framework detection.
 

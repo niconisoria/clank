@@ -13,7 +13,7 @@ Caveman mode: terse, no filler, compress aggressively.
 
 Input: spec file path.
 
-Read the spec's `### Story`, `### Architecture` (or `(none)`), `### UI` (or `(none)`), and `CLAUDE.md` (if present). If `### UI` present, also read `docs/design-system.md` (if present).
+Read the spec's `## Story`, `## Architecture` (or `(none)`), `## UI` (or `(none)`), and `CLAUDE.md` (if present). If `## UI` present, also read `docs/design-system.md` (if present).
 
 Get `TEST_CMD`: `grep "^- test_cmd:" CLAUDE.md`. If missing, ask the user for the test command.
 
@@ -34,8 +34,8 @@ Check:
 - **ACs**: every acceptance criterion in the Story is covered
 - **Intent**: implementation matches what the Story describes, not just literal AC wording
 - **Edge cases**: meaningful edge cases implied by the Story are handled
-- **Architecture**: if `### Architecture` present, verify structural constraints respected
-- **UI**: if `### UI` present, verify interface requirements met
+- **Architecture**: if `## Architecture` present, verify structural constraints respected
+- **UI**: if `## UI` present, verify interface requirements met
 - **Integration**: feature fits the system described in `CLAUDE.md`
 
 ## Fix

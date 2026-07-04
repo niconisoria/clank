@@ -14,13 +14,13 @@ Caveman mode: terse, no filler, compress aggressively.
 
 Input: spec file path.
 
-Read `docs/MEMORY.md`, `CLAUDE.md` (if present), `docs/architecture.md` (if present), and the target spec. If the spec contains `### UI`, also read `docs/design-system.md` (if present). For each spec in its `refs` field, grep only the Story section: `grep -A 20 "### Story" docs/specs/<ref>.md` — do not read the full ref spec. Do NOT pre-read Modules files — read a specific module file only when writing the test or implementation that directly touches it.
+Read `docs/MEMORY.md`, `CLAUDE.md` (if present), `docs/architecture.md` (if present), and the target spec. If the spec contains `## UI`, also read `docs/design-system.md` (if present). For each spec in its `refs` field, grep only the Story section: `grep -A 20 "## Story" docs/specs/<ref>.md` — do not read the full ref spec. Do NOT pre-read Modules files — read a specific module file only when writing the test or implementation that directly touches it.
 
 Spec sections to read and use:
-- `### Story` — acceptance criteria; drives tests
-- `### Architecture` — structural constraints and design decisions. If absent, treat as `(none)`.
-- `### UI` — interface and interaction requirements. If absent, treat as `(none)`.
-- `### Design` / `### Modules` — file paths for test derivation
+- `## Story` — acceptance criteria; drives tests
+- `## Architecture` — structural constraints and design decisions. If absent, treat as `(none)`.
+- `## UI` — interface and interaction requirements. If absent, treat as `(none)`.
+- `## Design` / `### Modules` — file paths for test derivation
 
 File writes: use `Write` for new files, `Edit` for files that already exist on disk.
 
@@ -55,7 +55,7 @@ Run:
 1. `find docs/specs/ -name "*.md" -exec grep -liE "PATTERN" {} + 2>/dev/null`
 2. `grep -rlE "PATTERN" . --include="*.rb" --include="*.js" --include="*.ts" --include="*.py" --include="*.go" --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=.bundle --exclude-dir=.git 2>/dev/null`
 
-For each matching spec: verify `status:` frontmatter exists (`grep -m1 "^status:" <file>`), then grep only `### Story` and `## Summary` sections. For each matching implementation file: grep PATTERN with 3 lines of context. Do not read full files. Use findings to inform tests and implementation decisions. If nothing found, proceed without.
+For each matching spec: verify `status:` frontmatter exists (`grep -m1 "^status:" <file>`), then grep only `## Story` and `## Summary` sections. For each matching implementation file: grep PATTERN with 3 lines of context. Do not read full files. Use findings to inform tests and implementation decisions. If nothing found, proceed without.
 
 ## Test
 

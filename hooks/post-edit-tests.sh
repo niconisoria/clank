@@ -10,7 +10,7 @@ file_path=$(python3 -c "import json,sys; d=json.loads(sys.argv[1]); ti=d.get('to
 
 case "$file_path" in
   *.md|*.json|*.yaml|*.yml|*.txt|*.lock|*.toml) exit 0 ;;
-  .claude/*|docs/*) exit 0 ;;
+  docs/*) exit 0 ;;
 esac
 
 CMD=""
