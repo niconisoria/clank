@@ -1,6 +1,6 @@
 ---
 name: implement
-description: TDD implementation. Reads spec, researches prior art, writes failing tests, implements until tests pass, reviews quality and spec compliance, then wraps up.
+description: TDD implementation. Reads spec, researches prior art, writes failing tests, implements until tests pass, then hands off to /review.
 allowed-tools:
   - Read
   - Write
@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
 ---
 
-# i-dunno:implementer
+# i-dunno:implement
 
 Caveman mode: terse, no filler, compress aggressively.
 
@@ -24,7 +24,7 @@ Spec sections to read and use:
 
 File writes: use `Write` for new files, `Edit` for files that already exist on disk.
 
-Check `CLAUDE.md` for a framework entry (format: `- framework: Name`) — skip detection if already recorded. Otherwise detect framework by checking project files in this order:
+Check `CLAUDE.md` for a framework entry (format: `- framework: Name`) and a `- test_cmd: <CMD>` line — skip detection if both already recorded. Otherwise detect framework by checking project files in this order:
 
 | File present | Framework | Test command |
 |---|---|---|
@@ -43,7 +43,7 @@ Check `CLAUDE.md` for a framework entry (format: `- framework: Name`) — skip d
 | `mix.exs` | ExUnit | `mix test` |
 | `Package.swift` | XCTest | `swift test` |
 
-If no match, ask the user what command to run tests with. Store the answer in `CLAUDE.md` as `- framework: <Name>` and use the command they provide as `TEST_CMD` for the rest of this session.
+If no match, ask the user what command to run tests with. Store the answer in `CLAUDE.md` as `- framework: <Name>` and `- test_cmd: <CMD>`; use `<CMD>` as `TEST_CMD` for the rest of this session (`/review` and `/validate` read the same line later, so it must be saved even when detected automatically).
 
 ## Research
 
@@ -67,54 +67,13 @@ For each matching spec: verify `status:` frontmatter exists (`grep -m1 "^status:
 3. Write implementation to make them pass.
 4. Run `TEST_CMD`. All tests must pass. If any fail, fix the implementation and re-run. Maximum 5 attempts — if still failing, stop and show the failing output, ask how to proceed.
 
-## Review
+## Handoff
 
-Read every file created or modified. Check in two passes:
-
-**Quality**:
-- Conventions: code matches patterns and rules in CLAUDE.md
-- Security: no injection, no exposed secrets, no unsafe input handling
-- Boundaries: error handling at every external boundary (DB, HTTP, file I/O)
-- Tests: specific, not trivially passing, cover meaningful paths
-- Quality: no dead code, no obvious bugs, no unnecessary complexity
-
-**Compliance**:
-- ACs: every acceptance criterion in the Story is covered
-- Intent: implementation matches what the Story describes, not just literal AC wording
-- Edge cases: meaningful edge cases implied by the Story are handled
-- Architecture: if `### Architecture` present, verify structural constraints respected
-- UI: if `### UI` present, verify interface requirements met
-- Integration: feature fits the system described in CLAUDE.md
-
-If issues found: fix them, re-run `TEST_CMD`. Maximum 3 fix rounds. If issues remain after 3 rounds:
+Print:
 
 ```
-Review not satisfied after 3 rounds. Remaining issues:
-<numbered list>
-Proceed anyway? (y/n)
+Tests pass. Handing off.
+spec: <spec path>
+Run:
+/review <spec path>
 ```
-
-Only continue on explicit `y` or no issues.
-
-## Wrap up
-
-All spec edits happen before the move so the file stays at its original path until fully ready. If interrupted, re-read the spec to check which steps are already present before repeating them.
-
-6. Append file references at the bottom of the spec as inline links — no heading, paths relative to project root. Include every file created or modified. Skip if already present.
-
-```markdown
-[filename](path/to/file) [test_filename](path/to/test_file) [other](path/to/other)
-```
-
-7. Append `## Summary` to the spec — two to four caveman sentences: what built, how works, key decisions. No filler. Skip if already present.
-8. Append to `docs/MEMORY.md` (create if absent) any decision rationales — only the *why* behind non-obvious choices (not file paths, module names, framework entries, or pattern descriptions). Format: `- <topic>: <rationale>`. Skip if no non-obvious decisions.
-9. Run `sed -i '' "s|^status: .*|status: implemented|" <spec-file-path>` to advance spec status.
-10. Print:
-
-```
-Done
-spec:  <spec path>
-files: <all touched file paths, one per line, indented>
-```
-
-Ask user to open the spec in their editor.

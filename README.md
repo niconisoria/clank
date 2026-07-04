@@ -7,7 +7,9 @@ Spec-driven TDD workflow for Claude Code. Idea goes in, working reviewed documen
 | Skill | Role |
 |---|---|
 | `/define` | Entry point. Guides idea through brainstorm → spec → design, then hands off to `/implement`. |
-| `/implement` | TDD loop. Reads spec, researches prior art, writes failing tests, implements, reviews quality and compliance, wraps up. |
+| `/implement` | TDD loop. Reads spec, researches prior art, writes failing tests, implements until they pass. Hands off to `/review`. |
+| `/review` | Deep code-quality and design-pattern audit (SOLID, coupling, abstraction level, duplication, security, dead code). Hands off to `/validate`. |
+| `/validate` | Spec-compliance check (ACs, intent, edge cases, architecture, UI, integration), then wraps up. |
 | `/gc` | Maintenance. Prunes stale, duplicate, out-of-scope, and unverifiable entries from `CLAUDE.md` and `docs/` files. |
 
 ## Workflow
@@ -33,13 +35,18 @@ flowchart TD
     N --> O[Write implementation]
     O --> P{tests pass?}
     P -- no, up to 5 --> O
-    P -- yes --> Q[Review: quality + compliance]
-    Q --> R{issues?}
-    R -- fix + retry, up to 3 --> Q
-    R -- LGTM --> S[Append file refs + Summary to spec]
-    S --> T[Update docs/MEMORY.md]
-    T --> U[Mark spec: implemented]
-    U --> V([Done])
+    P -- yes --> Q([Run /review spec-path])
+    Q --> Q2[Audit: SOLID, coupling, abstraction, duplication, security, dead code]
+    Q2 --> R{issues?}
+    R -- fix + retry, up to 3 --> Q2
+    R -- LGTM --> S([Run /validate spec-path])
+    S --> S2[Check ACs, intent, edge cases, architecture, UI, integration]
+    S2 --> S3{gaps?}
+    S3 -- fix + retry, up to 3 --> S2
+    S3 -- LGTM --> T[Append file refs + Summary to spec]
+    T --> U[Update docs/MEMORY.md]
+    U --> V[Mark spec: implemented]
+    V --> W([Done])
 ```
 
 ## Hooks
