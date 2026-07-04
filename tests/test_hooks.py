@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Unit tests for .claude/hooks/ — deterministic, no API key needed.
+# Unit tests for hooks/ — deterministic, no API key needed.
 # Run: pytest tests/test_hooks.py
 
 import json
@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
-HOOKS = ROOT / ".claude" / "hooks"
+HOOKS = ROOT / "hooks"
 
 
 def run_hook(script, payload):
