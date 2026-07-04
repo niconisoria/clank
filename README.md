@@ -39,11 +39,11 @@ flowchart TD
     Q --> Q2[Audit: SOLID, coupling, abstraction, duplication, security, dead code]
     Q2 --> R{issues?}
     R -- fix + retry, up to 3 --> Q2
-    R -- LGTM --> S([Run /validate spec-path])
+    R -- clean --> S([Run /validate spec-path])
     S --> S2[Check ACs, intent, edge cases, architecture, UI, integration]
     S2 --> S3{gaps?}
     S3 -- fix + retry, up to 3 --> S2
-    S3 -- LGTM --> T[Append file refs + Summary to spec]
+    S3 -- clean --> T[Append file refs + Summary to spec]
     T --> U[Update docs/MEMORY.md]
     U --> V[Mark spec: implemented]
     V --> W([Done])
@@ -55,13 +55,15 @@ flowchart TD
 |---|---|---|
 | `file-guard.sh` | Write / Edit | `.env`, key files, `bin/` writes, out-of-root paths, secret patterns in content |
 | `bash-guard.sh` | Bash | `rm -rf`, force push, pipe-to-shell, shell reads of key files |
+| `commit-guard.sh` | Bash | non-Conventional-Commits commit messages |
+| `post-edit-tests.sh` | Write / Edit (post) | nothing — runs the test suite after each source-file change |
 
 ## Structure
 
 ```
 hooks/
   hooks.json        — plugin hook registration (loaded when installed as a plugin)
-  *.sh               — guard/test scripts, referenced via ${CLAUDE_PLUGIN_ROOT}
+  *.sh              — guard/test scripts, referenced via ${CLAUDE_PLUGIN_ROOT}
 docs/
   specs/            — feature specs (status-tracked, workflow-owned)
   MEMORY.md         — decision rationales: why X over Y, never file paths or patterns
