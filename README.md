@@ -18,6 +18,7 @@ Spec-driven TDD workflow for Claude Code. Idea goes in, working reviewed documen
 | `/review` | Deep code-quality and design-pattern audit (SOLID, coupling, abstraction level, duplication, security, dead code). Hands off to `/validate`. |
 | `/validate` | Spec-compliance check (ACs, intent, edge cases, architecture, UI, integration), then wraps up. |
 | `/gc` | Maintenance. Prunes stale, duplicate, out-of-scope, and unverifiable entries from `CLAUDE.md` and `docs/` files. |
+| `/yolo` | Runs `define`→`implement`→`review`→`validate` back to back, zero user input. Auto-decides every question/approval, logs each decision to the spec's `## Autopilot Log`. For unsupervised/background runs. |
 
 ## Workflow
 
