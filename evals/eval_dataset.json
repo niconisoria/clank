@@ -1,0 +1,110 @@
+[
+  {
+    "skill": "define",
+    "task": "I want to build a dark mode toggle for the settings page. Spec this out for me.",
+    "format": "markdown",
+    "solution_criteria": "Creates the spec file with frontmatter (title derived from the idea, status: brainstorm, refs: []). Since '## Brainstorm' does not exist yet, the skill requires asking up to 3 short clarifying questions and waiting for answers BEFORE writing the Brainstorm section — so a response that asks 1-3 short questions and does NOT yet contain '## Brainstorm' content is correct, not incomplete. (The only other valid path is skipping straight to writing '## Brainstorm' — 5-10 lines, problem/scope/constraints only, no implementation details — then asking the user to approve or request changes; a response must follow one path or the other, not both.) Terse caveman tone, no explanation of what dark mode is or why it's useful (concepts/background are explicitly banned). Writes no code."
+  },
+  {
+    "skill": "define",
+    "task": "Continue this spec, I approve the brainstorm, move on.\n\n---\ntitle: Dark Mode Toggle\nstatus: brainstorm\nrefs: []\n---\n\n## Brainstorm\n\nAdd a dark mode toggle to settings. Scope: UI only, no backend. Constraint: must persist choice.",
+    "format": "markdown",
+    "solution_criteria": "Since the user already approved the Brainstorm inline, advances status from brainstorm to spec (frontmatter status: spec). Since '## Story' is missing, appends a '## Story' section: 'As [role], want [goal], so [benefit].' line, then 'AC:' with each criterion numbered and on one line, describing behavior from the user's point of view (not implementation). Tells the user the file path, then asks the user to approve or request changes. Terse caveman tone throughout the whole response, not just part of it."
+  },
+  {
+    "skill": "define",
+    "task": "Continue spec 99999999999999.",
+    "format": "text",
+    "solution_criteria": "Tells the user no spec was found for that timestamp and stops there — no file created, no spec content fabricated, no further action taken."
+  },
+  {
+    "skill": "implement",
+    "task": "Implement this spec.\n\n## Story\n\nAs a caller, want a greet(name) function, so I get a friendly message.\n\nAC:\n1. greet('Ada') returns 'Hello, Ada!'\n2. greet('') returns 'Hello, stranger!'\n\n## Design\n\n### Modules\n\n- `lib/greeter.js` — greet function\n- `test/greeter.test.js` — tests\n\nProject uses Node.js + Jest.",
+    "format": "javascript",
+    "solution_criteria": "Derives the test file path from the Design section's Modules list (test/greeter.test.js) and writes tests from both acceptance criteria. Confirms the tests fail before any implementation exists (the skill requires this — if a test passes with no implementation, it isn't specific enough and must be fixed first). Then writes lib/greeter.js and confirms the tests pass on a rerun. Ends with the exact handoff format: 'Tests pass. Handing off.' followed by the spec path and 'Run: /review <path>'."
+  },
+  {
+    "skill": "implement",
+    "task": "This project has a go.mod file and no CLAUDE.md yet. Detect the test framework and record it before implementing the spec.",
+    "format": "text",
+    "solution_criteria": "No framework recorded in CLAUDE.md yet, so detects it from project files per the skill's table: go.mod present -> Go test, test command 'go test ./...'. Does not ask the user since this was detectable from repo evidence. Records '- framework: Go test' and '- test_cmd: go test ./...' as lines in CLAUDE.md."
+  },
+  {
+    "skill": "implement",
+    "task": "Implement this spec, where the acceptance criterion is contradictory and cannot pass under any implementation: 'constant() must strictly equal both 2 and 5 in the same test.' After several failed attempts, what do you do?",
+    "format": "text",
+    "solution_criteria": "Runs the test command, sees it fail, fixes the implementation, reruns — repeating up to a maximum of 5 attempts total (the skill's explicit cap). Since this AC is contradictory and can never pass, after the 5th failing attempt it stops, shows the failing test output, and explicitly asks the user how to proceed. Does not loop indefinitely past 5 attempts and does not claim the tests pass when they do not."
+  },
+  {
+    "skill": "review",
+    "task": "Review this implementation for spec compliance and code quality:\n\n```js\nfunction greet(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hello, ${name}!`;\n}\nmodule.exports = { greet };\n```\n\nTests pass. No known issues.",
+    "format": "text",
+    "solution_criteria": "Audits the code against every dimension the skill lists: SOLID (single responsibility, open/closed, Liskov, interface segregation, dependency inversion), coupling/cohesion, abstraction level (premature/missing/right altitude), duplication, complexity, naming/conventions, security, boundaries (error handling at external I/O, no defensive handling for impossible internal cases), dead code, and test quality — not a cursory pass. Since the code is genuinely clean, does not invent issues, and ends with the exact handoff: 'Review clean.' followed by the spec path and 'Run: /validate <path>'."
+  },
+  {
+    "skill": "review",
+    "task": "Review this implementation:\n\n```js\nfunction greet(a,b,c,d) {\n  if (a) { if (b) { if (c) { if (d) { return \"Hello, \" + a+b+c+d + \"!\"; } } } }\n  var apiKey = \"sk-hardcoded-secret-12345\";\n  eval(\"console.log('\" + a + \"')\");\n  return \"Hello, stranger!\";\n}\n```",
+    "format": "text",
+    "solution_criteria": "Flags the hardcoded secret and the eval() injection risk as security issues, and the deeply nested/god-function structure as a complexity/SRP issue. Fixes each directly (Edit) and reruns tests, confirming they still pass — up to a maximum of 3 fix rounds. If issues remain unresolved after 3 rounds, presents a numbered list of the remaining issues and asks the exact question 'Proceed anyway? (y/n)', continuing only on an explicit 'y' — never silently proceeding to the /validate handoff on its own."
+  },
+  {
+    "skill": "review",
+    "task": "Review this implementation:\n\n```js\nfunction greetFormal(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Good day, ${name}!`;\n}\nfunction greetCasual(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hey, ${name}!`;\n}\nfunction greetFriendly(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hi there, ${name}!`;\n}\n// old implementation, unused\n// function greetOld(name) { return 'Hi ' + name; }\n```",
+    "format": "text",
+    "solution_criteria": "Flags the empty-name check duplicated across all three functions as missing abstraction (same logic hand-copied 3+ times, past the skill's '2-3 similar lines' exemption for inline duplication) and flags the commented-out dead code. Fixes directly (Edit) and reruns tests, confirming they still pass — up to a maximum of 3 fix rounds. If issues remain unresolved after 3 rounds, presents a numbered list and asks the exact question 'Proceed anyway? (y/n)', continuing only on explicit 'y'."
+  },
+  {
+    "skill": "validate",
+    "task": "Validate this implementation against the spec's Story: ACs are 'greet(\"Ada\") returns \"Hello, Ada!\"' and 'greet(\"\") returns \"Hello, stranger!\"'. Both are implemented and tests pass.",
+    "format": "markdown",
+    "solution_criteria": "Checks: both ACs are covered, and that the implementation's intent matches what the Story describes (not just literal AC wording). Since compliance is satisfied, wraps up in order: appends inline file reference links to the bottom of the spec (no heading, paths relative to project root); appends a '## Summary' section of 2-4 terse caveman sentences (what was built, how it works, key decisions — no filler); does NOT add a docs/MEMORY.md entry since no non-obvious decision rationale exists here; advances frontmatter status to implemented; prints the exact final block ('Done' / 'spec:  <path>' / 'files: <touched paths, one per line, indented>'); and asks the user to open the spec in their editor."
+  },
+  {
+    "skill": "validate",
+    "task": "Validate this implementation. Spec AC: 'greet(\"\") returns \"Hello, stranger!\"' (empty name handled distinctly, not \"Hello, !\"). Current implementation: `function greet(name) { return `Hello, ${name}!`; }` — empty name is not handled.",
+    "format": "text",
+    "solution_criteria": "Identifies the uncovered acceptance criterion (the empty-name edge case, which the current implementation does not handle distinctly). Fixes the implementation directly (Edit), reruns the test command and confirms it passes, and only after that proceeds to wrap-up (status -> implemented). Does not mark the spec implemented while the gap remains unfixed."
+  },
+  {
+    "skill": "validate",
+    "task": "Validate this implementation where 3 fix rounds have been run and one meaningful gap still remains: the UI spec requires a loading state that was never implemented.",
+    "format": "text",
+    "solution_criteria": "After 3 fix rounds with the loading-state gap still unresolved, presents the remaining gap as a numbered list and asks the exact question 'Proceed anyway? (y/n)'. Does not mark the spec implemented, does not run the wrap-up steps (file refs, Summary, status change), and does not proceed past this gate without an explicit 'y'."
+  },
+  {
+    "skill": "gc",
+    "task": "Scan this CLAUDE.md and docs/MEMORY.md for entries to prune.\n\nCLAUDE.md:\n```\n- tech stack: Node.js, Jest\n- framework: jest\n- Invoices are generated nightly via InvoiceJob\n```\n\ndocs/MEMORY.md:\n```\n- framework: jest\n- auth: JWT via lib/auth.rb\n```\n\n(lib/auth.rb does not exist in this project; InvoiceJob is not tech stack/folder purpose/iron law.)",
+    "format": "text",
+    "solution_criteria": "Applies the skill's checks in order, first match wins, per entry. 'Invoices are generated nightly via InvoiceJob' is in CLAUDE.md and is not tech stack / folder purpose / an iron law, so it is flagged SCOPE (with a suggested right home — this is a feature detail, belongs in the relevant spec's Summary). 'auth: JWT via lib/auth.rb' in docs/MEMORY.md names a file that doesn't exist, so it is flagged STALE (SCOPE only applies to CLAUDE.md entries, so this one skips straight to the STALE check). 'framework: jest' appears in both files, so the docs/MEMORY.md copy is flagged DUP (CLAUDE.md's copy is canonical). Ends by asking the user to approve all removals, pick by number, or skip — does not edit/delete anything before that approval."
+  },
+  {
+    "skill": "gc",
+    "task": "Scan this CLAUDE.md for entries to prune.\n\nCLAUDE.md:\n```\n- tech stack: Node.js, Jest\n- iron law: never commit secrets\n```\n\nNo docs/MEMORY.md exists.",
+    "format": "text",
+    "solution_criteria": "Every entry is in-scope, current, and not derivable/duplicate, so nothing is flagged. Responds with exactly 'Nothing to collect.' and stops. Makes no edits."
+  },
+  {
+    "skill": "gc",
+    "task": "Scan this docs/MEMORY.md entry: '- test_runner: pytest'. The project has a pyproject.toml present, so this value is mechanically derivable from project files and matches what detection would produce.",
+    "format": "text",
+    "solution_criteria": "The entry names a framework/test-runner value; pyproject.toml is present, and the mechanically-detected value (pytest) is non-empty, not 'unknown', and matches the entry's stated value. Flags it as DERIV per the skill's rule for framework entries whose detected value matches."
+  },
+  {
+    "skill": "yolo",
+    "task": "Yolo this: add a function sum(a, b) that returns the sum of two numbers. Fully unattended, don't stop for anything.",
+    "format": "text",
+    "solution_criteria": "Drives define, then implement, then review, then validate by calling the Skill tool for each (i-dunno:define, i-dunno:implement, i-dunno:review, i-dunno:validate in that order), following each skill's own instructions except where the yolo overrides table applies. Per those overrides: skips the brainstorm's clarifying questions (best judgment instead), auto-approves every approve/changes gate on the first draft, and skips every 'Run: /nextskill <path>' handoff print by immediately continuing to the next stage instead of stopping — so zero user questions and zero pauses for approval anywhere in the run. Every override actually used (skipped question, auto-approval, guessed test command, etc.) gets one line appended to a '## Autopilot Log' section on the spec (placed after '## Story'). Ends with the exact final block: 'yolo done' / spec path / 'status: implemented' / autopilot log entry count / touched files list."
+  },
+  {
+    "skill": "yolo",
+    "task": "Yolo resume this spec, fully unattended:\n\n---\ntitle: Sum Function\nstatus: design\nrefs: []\n---\n\n## Story\n\nAs a caller, want a sum(a, b) function, so I can add two numbers.\n\nAC:\n1. sum(2, 3) returns 5\n\n## Design\n\n### Modules\n\n- `lib/sum.js` — sum function\n- `test/sum.test.js` — tests",
+    "format": "text",
+    "solution_criteria": "Since the spec's status is already 'design' (design-or-later), skips the define stage entirely — does not redo or re-invoke brainstorm, story, or design work, and does not call the i-dunno:define skill at all. Goes straight to implement, then review, then validate (calling each via the Skill tool), ending with frontmatter status: implemented."
+  },
+  {
+    "skill": "yolo",
+    "task": "Yolo this idea in a project with no CLAUDE.md, no lockfiles, and no existing test files — test framework cannot be detected from repo evidence. The idea is written in Python. Fully unattended.",
+    "format": "text",
+    "solution_criteria": "Test framework can't be detected from repo evidence (no CLAUDE.md, no lockfiles, no test files) and the idea is Python, so per the yolo overrides table it does not stop to ask the user for the test command — it defaults by language to 'python -m pytest' (the documented Python default), saves '- framework:' and '- test_cmd: python -m pytest' to CLAUDE.md as the implement skill normally would, and logs the guess as one line in the '## Autopilot Log' (e.g. noting it was guessed/defaulted due to no repo evidence)."
+  }
+]
