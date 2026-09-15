@@ -8,7 +8,7 @@ allowed-tools:
   - Grep
 ---
 
-# i-dunno:review
+# clank:review
 
 Caveman mode: terse, no filler, compress aggressively.
 

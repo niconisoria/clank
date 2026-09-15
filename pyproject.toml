@@ -1,7 +1,7 @@
 [project]
-name = "i-dunno-dev"
+name = "clank-dev"
 version = "0.1.0"
-description = "Dev tooling for i-dunno: hook tests + skill evaluator"
+description = "Dev tooling for Clank: hook tests + skill evaluator"
 requires-python = ">=3.10"
 dependencies = [
     "anthropic",

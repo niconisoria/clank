@@ -1,12 +1,12 @@
-# i-dunno
+# Clank
 
 Spec-driven TDD workflow for Claude Code. Idea goes in, working reviewed documented code comes out.
 
 ## Install
 
 ```
-/plugin marketplace add niconisoria/i-dunno
-/plugin install i-dunno@i-dunno
+/plugin marketplace add niconisoria/clank
+/plugin install clank@clank
 ```
 
 ## Skills

@@ -1,6 +1,6 @@
 ---
 name: yolo
-description: Runs the full i-dunno workflow (define → implement → review → validate) end to end with zero user interaction, for unattended/background execution. Auto-decides every question and approval gate, logs each decision to the spec, and pushes through to a finished spec no matter what it hits. Use when the user wants to run the pipeline unsupervised, leave it running, go full auto, or "yolo" a spec through to done.
+description: Runs the full Clank workflow (define → implement → review → validate) end to end with zero user interaction, for unattended/background execution. Auto-decides every question and approval gate, logs each decision to the spec, and pushes through to a finished spec no matter what it hits. Use when the user wants to run the pipeline unsupervised, leave it running, go full auto, or "yolo" a spec through to done.
 allowed-tools:
   - Read
   - Write
@@ -9,7 +9,7 @@ allowed-tools:
   - Skill
 ---
 
-# i-dunno:yolo
+# clank:yolo
 
 Caveman: terse, no filler, compress aggressively.
 
@@ -41,11 +41,11 @@ Every override actually exercised (a skipped question, an auto-approval, a guess
 
 ## Run
 
-1. New idea → `Skill(skill: "i-dunno:define", args: <idea text>)`. Existing spec → find it by timestamp, read `status:`, and enter `define` at that stage (skip straight to `implement` if status is already `design` or later).
+1. New idea → `Skill(skill: "clank:define", args: <idea text>)`. Existing spec → find it by timestamp, read `status:`, and enter `define` at that stage (skip straight to `implement` if status is already `design` or later).
 2. Drive brainstorm → spec → design straight through with the overrides above — no pause between stages.
-3. Design accepted → `Skill(skill: "i-dunno:implement", args: <spec path>)`. Follow its framework detection, research, test, code loop with the overrides above.
-4. Tests pass (or shipped-anyway) → `Skill(skill: "i-dunno:review", args: <spec path>)`. Follow its audit + fix loop with the overrides above.
-5. Clean (or proceeded-anyway) → `Skill(skill: "i-dunno:validate", args: <spec path>)`. Follow its compliance + fix loop and wrap-up (file refs, Summary, `docs/MEMORY.md`, status → `implemented`) with the overrides above.
+3. Design accepted → `Skill(skill: "clank:implement", args: <spec path>)`. Follow its framework detection, research, test, code loop with the overrides above.
+4. Tests pass (or shipped-anyway) → `Skill(skill: "clank:review", args: <spec path>)`. Follow its audit + fix loop with the overrides above.
+5. Clean (or proceeded-anyway) → `Skill(skill: "clank:validate", args: <spec path>)`. Follow its compliance + fix loop and wrap-up (file refs, Summary, `docs/MEMORY.md`, status → `implemented`) with the overrides above.
 
 Show each stage's real output as you go — spec content (Story/Design), the Autopilot Log entries as they're added, test run output, review findings, wrap-up artifacts. The final block below is the last thing printed, not a substitute for showing the work.
 

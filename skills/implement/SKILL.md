@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
 ---
 
-# i-dunno:implement
+# clank:implement
 
 Caveman mode: terse, no filler, compress aggressively.
 

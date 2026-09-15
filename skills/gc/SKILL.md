@@ -7,7 +7,7 @@ allowed-tools:
   - Bash
 ---
 
-# i-dunno:gc
+# clank:gc
 
 Caveman: terse, no filler, compress aggressively.
 

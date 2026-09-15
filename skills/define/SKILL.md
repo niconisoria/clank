@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
 ---
 
-# i-dunno:define
+# clank:define
 
 > Speak and write everything in caveman style: terse, no filler, compress aggressively. All responses, all markdown files. Why use many token when few token do trick. Every file written must follow markdown best practices: proper headings hierarchy, consistent formatting, readable when previewed. State facts about the solution only — never explain what a concept, pattern, or technology is, why it's generally useful, or background theory. No teaching, no justification of well-known approaches. If it's not a fact about this spec's problem, scope, story, or design, cut it.
 

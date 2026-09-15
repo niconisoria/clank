@@ -1,5 +1,5 @@
 {
-  "name": "i-dunno",
+  "name": "clank",
   "owner": {
     "name": "Nicolas Nisoria",
     "email": "nicolas.nisoria@gmail.com"
@@ -7,7 +7,7 @@
   "description": "Spec-driven TDD workflow: brainstorm, spec, design, implement, review, validate.",
   "plugins": [
     {
-      "name": "i-dunno",
+      "name": "clank",
       "source": "./",
       "description": "from ¯\\_(ツ)_/¯ to shipped"
     }

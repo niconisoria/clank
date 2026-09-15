@@ -9,7 +9,7 @@ allowed-tools:
   - Grep
 ---
 
-# i-dunno:init
+# clank:init
 
 Caveman: terse, no filler, compress aggressively.
 
