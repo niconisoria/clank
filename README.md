@@ -18,7 +18,7 @@ Clank is a Claude Code plugin that turns a rough idea into shipped, reviewed, sp
 | `/implement` | TDD loop. Reads spec, researches prior art, writes failing tests, implements until they pass. Hands off to `/review`. |
 | `/review` | Deep code-quality and design-pattern audit (SOLID, coupling, abstraction level, duplication, security, dead code). Hands off to `/validate`. |
 | `/validate` | Spec-compliance check (ACs, intent, edge cases, architecture, UI, integration), then wraps up. |
-| `/gc` | Maintenance. Prunes stale, duplicate, out-of-scope, and unverifiable entries from `CLAUDE.md` and `docs/` files. |
+| `/gc` | Maintenance. Prunes stale, duplicate, derivable, out-of-scope, and unverifiable entries from `CLAUDE.md` and `docs/` files. |
 | `/yolo` | Runs `define`→`implement`→`review`→`validate` back to back, zero user input. Auto-decides every question/approval, logs each decision to the spec's `## Autopilot Log`. For unsupervised/background runs. |
 
 ## Workflow
