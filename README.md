@@ -57,6 +57,18 @@ flowchart TD
     V --> W([Done])
 ```
 
+## Evals
+
+Model-graded eval suite for the skills. For each task in `evals/eval_dataset.json`: generate a solution under the target skill's `SKILL.md`, then grade it against that task's `solution_criteria` with a second Claude call acting as judge.
+
+```
+uv sync
+uv run evals/evaluate.py                  # all skills
+uv run evals/evaluate.py --skill define   # one skill
+```
+
+Reads `ANTHROPIC_API_KEY` from `evals/.env` (see `.env.example`) or the environment. Prints a pass/fail summary per skill and writes `evals/report.json`.
+
 ## Hooks
 
 | Hook | Trigger | Blocks |
@@ -72,6 +84,9 @@ flowchart TD
 hooks/
   hooks.json        — plugin hook registration (loaded when installed as a plugin)
   *.sh              — guard/test scripts, referenced via ${CLAUDE_PLUGIN_ROOT}
+evals/
+  eval_dataset.json — task suite: skill, task, expected format, solution_criteria
+  evaluate.py       — runs the model-graded eval, prints summary, writes report.json
 docs/
   specs/            — feature specs (status-tracked, workflow-owned)
   MEMORY.md         — decision rationales: why X over Y, never file paths or patterns
