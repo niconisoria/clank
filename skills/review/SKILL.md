@@ -31,7 +31,7 @@ Combine, dedupe. If empty or not a git repo, fall back to the `### Modules` file
 
 ## Audit
 
-Check each file against every dimension below. This is the extensive pass — do not shortcut it.
+Check each file against every dimension below. This is the extensive pass — do not shortcut it. Before responding, confirm every dimension below was actually checked — don't skip a category silently. List findings per dimension with issues; for clean dimensions, a compact "clean" note is enough, but don't omit the category entirely. SOLID has five sub-principles — address each individually (even one clipped clause each); a single collapsed line for all five doesn't count as checking each.
 
 **SOLID & structure**:
 - Single Responsibility: does each function/class do one thing; flag god functions/classes
@@ -66,7 +66,7 @@ Check each file against every dimension below. This is the extensive pass — do
 
 ## Fix
 
-For each issue found, fix it directly (`Edit`), then re-run `TEST_CMD` — all tests must still pass. Maximum 3 fix rounds. If issues remain after 3 rounds:
+For each issue found, fix it directly (`Edit`), then re-run `TEST_CMD` — all tests must still pass. Show the actual TEST_CMD command and its output each time — don't narrate or claim the result. A fix round only counts if TEST_CMD was actually run after the edit and its output shown — don't count a round you never ran. If TEST_CMD is unknown or can't run, say so explicitly and stop there — don't fold that into the numbered "remaining issues" list below or fabricate round counts around it. Maximum 3 fix rounds. If issues remain after 3 genuine rounds:
 
 ```
 Review not satisfied after 3 rounds. Remaining issues:
@@ -78,7 +78,7 @@ Only continue on explicit `y` or no issues remaining.
 
 ## Handoff
 
-Print:
+Print this block verbatim as your final output only — not folded into other text:
 
 ```
 Review clean.

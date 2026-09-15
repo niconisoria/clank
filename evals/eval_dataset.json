@@ -49,19 +49,19 @@
   },
   {
     "skill": "review",
-    "task": "Review this implementation for spec compliance and code quality:\n\n```js\nfunction greet(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hello, ${name}!`;\n}\nmodule.exports = { greet };\n```\n\nTests pass. No known issues.",
+    "task": "Spec: docs/specs/20260101000000_greeter.md\n\nReview this implementation for spec compliance and code quality:\n\n```js\nfunction greet(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hello, ${name}!`;\n}\nmodule.exports = { greet };\n```\n\nTests pass. No known issues.",
     "format": "text",
     "solution_criteria": "Audits the code against every dimension the skill lists: SOLID (single responsibility, open/closed, Liskov, interface segregation, dependency inversion), coupling/cohesion, abstraction level (premature/missing/right altitude), duplication, complexity, naming/conventions, security, boundaries (error handling at external I/O, no defensive handling for impossible internal cases), dead code, and test quality — not a cursory pass. Since the code is genuinely clean, does not invent issues, and ends with the exact handoff: 'Review clean.' followed by the spec path and 'Run: /validate <path>'."
   },
   {
     "skill": "review",
-    "task": "Review this implementation:\n\n```js\nfunction greet(a,b,c,d) {\n  if (a) { if (b) { if (c) { if (d) { return \"Hello, \" + a+b+c+d + \"!\"; } } } }\n  var apiKey = \"sk-hardcoded-secret-12345\";\n  eval(\"console.log('\" + a + \"')\");\n  return \"Hello, stranger!\";\n}\n```",
+    "task": "CLAUDE.md already has:\n- framework: jest\n- test_cmd: npx jest\n\nReview this implementation:\n\n```js\nfunction greet(a,b,c,d) {\n  if (a) { if (b) { if (c) { if (d) { return \"Hello, \" + a+b+c+d + \"!\"; } } } }\n  var apiKey = \"sk-hardcoded-secret-12345\";\n  eval(\"console.log('\" + a + \"')\");\n  return \"Hello, stranger!\";\n}\n```\n\nTests currently pass (no coverage of the issues above).",
     "format": "text",
     "solution_criteria": "Flags the hardcoded secret and the eval() injection risk as security issues, and the deeply nested/god-function structure as a complexity/SRP issue. Fixes each directly (Edit) and reruns tests, confirming they still pass — up to a maximum of 3 fix rounds. If issues remain unresolved after 3 rounds, presents a numbered list of the remaining issues and asks the exact question 'Proceed anyway? (y/n)', continuing only on an explicit 'y' — never silently proceeding to the /validate handoff on its own."
   },
   {
     "skill": "review",
-    "task": "Review this implementation:\n\n```js\nfunction greetFormal(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Good day, ${name}!`;\n}\nfunction greetCasual(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hey, ${name}!`;\n}\nfunction greetFriendly(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hi there, ${name}!`;\n}\n// old implementation, unused\n// function greetOld(name) { return 'Hi ' + name; }\n```",
+    "task": "CLAUDE.md already has:\n- framework: jest\n- test_cmd: npx jest\n\nReview this implementation:\n\n```js\nfunction greetFormal(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Good day, ${name}!`;\n}\nfunction greetCasual(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hey, ${name}!`;\n}\nfunction greetFriendly(name) {\n  if (!name) return \"Hello, stranger!\";\n  return `Hi there, ${name}!`;\n}\n// old implementation, unused\n// function greetOld(name) { return 'Hi ' + name; }\n```\n\nTests currently pass (no coverage of the issues above).",
     "format": "text",
     "solution_criteria": "Flags the empty-name check duplicated across all three functions as missing abstraction (same logic hand-copied 3+ times, past the skill's '2-3 similar lines' exemption for inline duplication) and flags the commented-out dead code. Fixes directly (Edit) and reruns tests, confirming they still pass — up to a maximum of 3 fix rounds. If issues remain unresolved after 3 rounds, presents a numbered list and asks the exact question 'Proceed anyway? (y/n)', continuing only on explicit 'y'."
   },
