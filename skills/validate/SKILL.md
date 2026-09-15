@@ -40,7 +40,7 @@ Check:
 
 ## Fix
 
-For each gap found, fix it directly (`Edit`), then re-run `TEST_CMD` — all tests must still pass. Maximum 3 fix rounds. If issues remain after 3 rounds:
+For each gap found, fix it directly (`Edit`), then re-run `TEST_CMD` — all tests must still pass. Show the actual TEST_CMD command and its output each time — don't narrate or claim the result. Maximum 3 fix rounds. If issues remain after 3 rounds:
 
 ```
 Validation not satisfied after 3 rounds. Remaining issues:
@@ -61,7 +61,7 @@ All spec edits happen before the move so the file stays at its original path unt
 ```
 
 2. Append `## Summary` to the spec — two to four caveman sentences: what built, how works, key decisions. No filler. Skip if already present.
-3. Append to `docs/MEMORY.md` (create if absent) any decision rationales — only the *why* behind non-obvious choices (not file paths, module names, framework entries, or pattern descriptions). Format: `- <topic>: <rationale>`. Skip if no non-obvious decisions.
+3. Append to `docs/MEMORY.md` (create if absent) any decision rationales — only the *why* behind non-obvious choices (not file paths, module names, framework entries, or pattern descriptions). A choice already stated in the spec's AC or Story is not non-obvious — skip it. Format: `- <topic>: <rationale>`. Skip if no non-obvious decisions.
 4. Run `sed -i '' "s|^status: .*|status: implemented|" <spec-file-path>` to advance spec status.
 5. Print:
 
