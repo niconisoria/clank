@@ -346,7 +346,7 @@ class Report:
         print(f"\nFull results (incl. solutions) written to {path}")
 
 
-VALID_SKILLS = {"define", "implement", "review", "validate", "gc", "yolo"}
+VALID_SKILLS = {"init", "define", "implement", "review", "validate", "gc", "yolo"}
 
 
 class Args(BaseModel):
@@ -380,7 +380,7 @@ def parse_args() -> Args:
     parser.add_argument(
         "--skill",
         default=None,
-        help="only run tasks for this skill (define/implement/review/validate/gc/yolo)",
+        help="only run tasks for this skill (init/define/implement/review/validate/gc/yolo)",
     )
     parser.add_argument("--concurrency", type=int, default=4)
     parser.add_argument(

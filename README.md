@@ -13,6 +13,7 @@ Spec-driven TDD workflow for Claude Code. Idea goes in, working reviewed documen
 
 | Skill | Role |
 |---|---|
+| `/init` | Bootstraps `CLAUDE.md` — tech stack, folder purposes, and iron-law rules only. Run once per project, before `/define`. |
 | `/define` | Entry point. Guides idea through brainstorm → spec → design, then hands off to `/implement`. |
 | `/implement` | TDD loop. Reads spec, researches prior art, writes failing tests, implements until they pass. Hands off to `/review`. |
 | `/review` | Deep code-quality and design-pattern audit (SOLID, coupling, abstraction level, duplication, security, dead code). Hands off to `/validate`. |

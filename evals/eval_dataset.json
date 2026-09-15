@@ -1,5 +1,23 @@
 [
   {
+    "skill": "init",
+    "task": "Init this project.\n\nFiles present: package.json with devDependencies including jest. Top-level dirs: src/ (contains index.js, routes/, models/), test/ (contains *.test.js files), docs/ (empty). No CLAUDE.md exists yet. An existing pre-commit hook blocks any commit containing a hardcoded secret pattern.",
+    "format": "markdown",
+    "solution_criteria": "No CLAUDE.md exists yet, so writes a new one directly — no overwrite confirmation needed. Detects framework from package.json's jest devDependency per the skill's table: framework jest, test_cmd 'npx jest'. Combines language + framework into one tech-stack line (e.g. '- tech stack: Node.js, Jest'). Infers folder purposes for src/ (application code, given routes/ and models/) and test/ (test suite, given *.test.js files) without asking the user, since both are inferable from a glance at their contents. Derives an iron law from the existing pre-commit hook (e.g. '- iron law: never commit hardcoded secrets') without needing to ask the user, since it's already enforced. Since everything needed is either detected or derived, writes CLAUDE.md in this same response — does not stop to ask the user anything. The written content is shown directly as flat '- key: value' bullets, one per line, at column zero — no headers, no grouping labels, no nested/indented bullets, no narration wrapping the list. Ends by telling the user the CLAUDE.md path and how many lines were written."
+  },
+  {
+    "skill": "init",
+    "task": "Init this project. CLAUDE.md already exists:\n\n```\n- tech stack: Ruby, RSpec\n- framework: RSpec\n- test_cmd: bundle exec rspec\n```",
+    "format": "text",
+    "solution_criteria": "Since CLAUDE.md already exists, does not silently regenerate or overwrite it. Shows the current content, then asks the user to choose: regenerate from scratch, add missing pieces only, or stop. Does not write or edit the file before the user answers that question."
+  },
+  {
+    "skill": "init",
+    "task": "Init this project. No package.json, Gemfile, pyproject.toml, go.mod, Cargo.toml, pom.xml, build.gradle, mix.exs, or Package.swift present — test framework can't be detected from any file. No CLAUDE.md exists. An existing pre-commit hook blocks any Write/Edit touching a file named .env or matching a secret pattern.",
+    "format": "text",
+    "solution_criteria": "No manifest or lockfile matches the skill's detection table, so it does not fabricate a framework or test_cmd — it asks the user for the test command instead of guessing one. Recognizes the existing pre-commit hook blocking .env writes/secret patterns as an iron law and turns it into a '- iron law: ...' line (e.g. never commit secrets) without needing to ask the user for that one specifically. Does not write CLAUDE.md with a fabricated test_cmd while that question is still open."
+  },
+  {
     "skill": "define",
     "task": "I want to build a dark mode toggle for the settings page. Spec this out for me.",
     "format": "markdown",
