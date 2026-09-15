@@ -60,16 +60,16 @@ For each matching spec: verify `status:` frontmatter exists (`grep -m1 "^status:
 ## Test
 
 1. Derive the test file path from the `### Modules` list in the Design section. Write tests from the acceptance criteria in the Story section.
-2. Run `TEST_CMD`. All tests must fail — if any pass, the test is not specific enough or implementation already exists; fix the tests before continuing.
+2. Run `TEST_CMD`. All tests must fail — if any pass, the test is not specific enough or implementation already exists; fix the tests before continuing. Show the TEST_CMD output confirming the failure before continuing — a claim that it failed is not enough.
 
 ## Code
 
 3. Write implementation to make them pass.
-4. Run `TEST_CMD`. All tests must pass. If any fail, fix the implementation and re-run. Maximum 5 attempts — if still failing, stop and show the failing output, ask how to proceed.
+4. Run `TEST_CMD`. All tests must pass. If any fail, fix the implementation and re-run. Show TEST_CMD output for every run, including each retry — narrate nothing, show the actual command and result each time. Maximum 5 attempts — if still failing, stop, show the real last failing output verbatim (not paraphrased), and ask how to proceed.
 
 ## Handoff
 
-Print:
+Print this block verbatim as your final output only — not inside a code comment, not folded into other text:
 
 ```
 Tests pass. Handing off.
