@@ -1,6 +1,6 @@
 # Clank
 
-Spec-driven TDD workflow for Claude Code. Idea goes in, working reviewed documented code comes out.
+Clank is a Claude Code plugin that turns a rough idea into shipped, reviewed, spec-compliant code through a fixed pipeline of skills: brainstorm and spec it (`/define`), implement it test-first (`/implement`), audit it for code quality (`/review`), verify it against the spec (`/validate`), and keep the project's `CLAUDE.md` clean (`/gc`). Each stage hands off to the next only once its own gate passes — a written spec, passing tests, a clean audit — so an agent can't skip ahead or claim done without evidence. Run the whole chain unsupervised with `/yolo`, or drive it stage by stage and approve each step yourself.
 
 ## Install
 
