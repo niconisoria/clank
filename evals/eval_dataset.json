@@ -18,6 +18,18 @@
     "solution_criteria": "Tells the user no spec was found for that timestamp and stops there — no file created, no spec content fabricated, no further action taken."
   },
   {
+    "skill": "define",
+    "task": "Continue this spec, story looks good, approved.\n\n---\ntitle: CSV Export\nstatus: design\nrefs: []\n---\n\n## Story\n\nAs user, want export CSV button, so keep data offline.\n\nAC:\n1. click exports visible rows only\n2. filename has today's date",
+    "format": "markdown",
+    "solution_criteria": "Since '## Design' is missing, appends a '## Design' section with exactly three subsections in order: '### Flow' — ONE mermaid fenced code block (```mermaid ... ```) covering the happy path and the main failure path only, not multiple diagrams; '### Data' — key input/output fields and types only, not full schemas; '### Modules' — every file that will be created or modified, including test files, each as a bullet '- `path` — what changes'. Tells the user the file path, then asks the user to approve or request changes. Does not change frontmatter status (stays 'design' — that only changes later, when validate runs). Terse caveman tone throughout, no concept/background explanation."
+  },
+  {
+    "skill": "define",
+    "task": "Continue this spec, design looks good, approved.\n\n---\ntitle: CSV Export\nstatus: design\nrefs: []\n---\n\n## Story\n\nAs user, want export CSV button, so keep data offline.\n\nAC:\n1. click exports visible rows only\n2. filename has today's date\n\n## Design\n\n### Flow\n\n```mermaid\nflowchart LR\n    A([start]) --> B[export]\n    B --> C([success])\n    B --> D([error])\n```\n\n### Data\n\ninput: { rows: array }\noutput: { file: csv }\n\n### Modules\n\n- `lib/export.js` — csv export logic\n- `test/export.test.js` — tests",
+    "format": "text",
+    "solution_criteria": "Since the user approved the existing Design section, responds with ONLY the exact handoff block — no other content, no re-showing the design, no more questions: 'Design approved. Run:' followed by a blank line then '/implement <spec file path>'. Does not change frontmatter status (design -> implemented only happens later, in validate, not here). Does not write or modify any code."
+  },
+  {
     "skill": "implement",
     "task": "Implement this spec.\n\n## Story\n\nAs a caller, want a greet(name) function, so I get a friendly message.\n\nAC:\n1. greet('Ada') returns 'Hello, Ada!'\n2. greet('') returns 'Hello, stranger!'\n\n## Design\n\n### Modules\n\n- `lib/greeter.js` — greet function\n- `test/greeter.test.js` — tests\n\nProject uses Node.js + Jest.",
     "format": "javascript",

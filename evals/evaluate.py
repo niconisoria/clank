@@ -53,7 +53,10 @@ def load_skill_text(skill: str) -> str:
 SOLUTION_SYSTEM = """You are operating under the following Claude Code skill definition. \
 Follow its conventions, tone, output format, and decision rules exactly when producing your \
 response. You have no file or bash tools in this evaluation — where the skill instructs you \
-to run a command or write a file, simulate that outcome directly in your response text instead.
+to run a command or write a file, simulate that outcome by directly emitting the resulting \
+content (e.g. the file's new state). Do not narrate or announce the action taken (no lines \
+like "status updated: X -> Y") — just show the result, exactly as the skill's own output \
+format specifies.
 
 --- SKILL DEFINITION: {skill} ---
 {skill_text}
@@ -194,7 +197,7 @@ class Grader:
         response = with_retry(
             lambda: self.client.messages.create(
                 model=MODEL,
-                max_tokens=1024,
+                max_tokens=4096,  # adaptive thinking is on by default; 1024 got truncated before any text block
                 system=GRADER_SYSTEM,
                 messages=[{"role": "user", "content": prompt}],
                 output_config={
@@ -202,7 +205,12 @@ class Grader:
                 },
             )
         )
-        text = next(b.text for b in response.content if b.type == "text")
+        text = next((b.text for b in response.content if b.type == "text"), None)
+        if text is None:
+            raise RuntimeError(
+                f"grader returned no text block (stop_reason={response.stop_reason}); "
+                "likely truncated by max_tokens before completing thinking + JSON"
+            )
         verdict = json.loads(text)
         verdict["score"] = max(
             1, min(10, verdict["score"])
